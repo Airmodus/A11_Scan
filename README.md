@@ -1,9 +1,9 @@
-// A11_Scan
-// Data analysis code for Airmodus A11 scanning data inversion
+A11_Scan
+* Data analysis code for Airmodus A11 scanning data inversion
 
-//------------------------------------------------------------------------------
-// AIRMODUS A11 inversion codes for scanning raw (.dat) data 
-// by JV (joonas.vanhanen@airmodus.com)
+*------------------------------------------------------------------------------
+* AIRMODUS A11 inversion codes for scanning raw (.dat) data 
+* by JV (joonas.vanhanen@airmodus.com)
 
 // NOTE: These codes are used to invert A11 scanning data only!
 
