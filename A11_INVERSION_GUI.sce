@@ -59,7 +59,9 @@
 clear
 clearglobal
 xdel(winsid())
-getd('/Airmodus/Data_analysis/SCILAB CODES/')
+p = pwd()
+getd(p)
+clear p
 
 [filename,datapath] = uigetfile({'*.dat'},"",'SELECT THE DATA FILE');
 datet = (part(filename,$-11:$-4));
