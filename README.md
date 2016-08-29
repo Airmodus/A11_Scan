@@ -1,14 +1,14 @@
 A11_Scan
-* Data analysis code for Airmodus A11 scanning data inversion
+Data analysis code for Airmodus A11 scanning data inversion
 
-*------------------------------------------------------------------------------
-* AIRMODUS A11 inversion codes for scanning raw (.dat) data 
-* by JV (joonas.vanhanen@airmodus.com)
+------------------------------------------------------------------------------
+AIRMODUS A11 inversion codes for scanning raw (.dat) data 
+by JV (joonas.vanhanen@airmodus.com)
 
-// NOTE: These codes are used to invert A11 scanning data only!
+NOTE: These codes are used to invert A11 scanning data only!
 
-// Inverts PSM scan data (.dat-file) into size distributions based on calibration file data
-// Corrects data for diffusion losses if needed based on Gormley & Kennedy 1949
+* Inverts PSM scan data (.dat-file) into size distributions based on calibration file data
+* Corrects data for diffusion losses if needed based on Gormley & Kennedy 1949
 // Plots and saves inverted data
 
 // Run A11_INVERSION_GUI.sci to invert .dat - file
