@@ -9,6 +9,8 @@
 // Corrects data for diffusion losses if needed based on Gormley & Kennedy 1949
 // Plots and saves inverted data
 
+// Download Scilab from: http://www.scilab.org/download/latest
+
 // Run A11_INVERSION_GUI.sci to invert .dat - file
 
 // sub-functions / .sci-files used:
