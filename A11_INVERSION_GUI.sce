@@ -24,6 +24,7 @@
 // cunn.sci
 // rlambda.sci
 // kaasuv.sci
+// averagedata.sci
 
 // Note: requires A11 calibration file!
 
