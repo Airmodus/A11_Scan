@@ -44,7 +44,7 @@
 // Licence.
 // You may obtain a copy of the Licence at:
 
-// https://joinup.ec.europa.eu/software/page/eupl5
+// https://joinup.ec.europa.eu/community/eupl/og_page/european-union-public-licence-eupl-v11
 
 // Unless required by applicable law or agreed to in 
 // writing, software distributed under the Licence is
