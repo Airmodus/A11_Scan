@@ -74,7 +74,7 @@ datet = (part(filename,$-11:$-4));
 // USER INPUTS
 //------------------------------------------------------------------------------
 
-labels=["File name for inverted data";"Number of bins";"Number of scans to average";"Dilution factor 1/X";"Saving on 1/0";"Plotting on 1/0";"Diffusion correction on 1/0";"Inlet length [cm]";"Inlet tube radius [cm]";"Sample tube flow rate [lpm]";"Temperature [Kelvin]";"Pressure [Pascal]"];
+labels=["File name for inverted data";"Number of bins";"Number of scans to average";"Dilution factor";"Saving on 1/0";"Plotting on 1/0";"Diffusion correction on 1/0";"Sampling tube length [cm]";"Sampling tube radius [cm]";"Sampling tube flow rate [lpm]";"Temperature [Kelvin]";"Pressure [Pascal]"];
 [ok,fileid1,bn,avenum,DF,wanttosave,plotting,diffcorr,inletl,inletr,inletfr,temp,pres]=getvalue("Give input parameters for the inversion code",labels,...
      list("str",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1),["INVERTED_PSM_DATA";"5";"1";"1";"0";"1";"0";"40";"0.2";"2.5";"293";"101325"])
 
