@@ -265,7 +265,7 @@ if plotting == 1 then
     concmin=floor(log10(min(conc5)));
     concmax=ceil(log10(max(conc5)));
     conc6=log10(conc5);
-    conc6 = [conc6 ones(size(conc6,1),1)];
+    conc6 = [conc6(:,1) conc6];
     
     f = figure(2)
     clf()
