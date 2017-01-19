@@ -228,6 +228,7 @@ dconc=max(dconc,0);
 
 // Averaging data HERE
 if averaging == 1 & avenum <= size(timenew,1) then
+    avenum = avenum-1
     for ii = 1:size(dconc,1)-avenum
         ave_dconc(ii,:) = mean(dconc(ii:ii+avenum,:),'r')
         ave_time(ii) = mean(timenew(ii))
