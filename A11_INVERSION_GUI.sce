@@ -1,7 +1,7 @@
 
 //------------------------------------------------------------------------------
 // AIRMODUS A11 inversion code for scanning raw (.dat) data 
-// v.0.6
+// v.0.6.1
 
 // by Joonas Vanhanen (joonas.vanhanen@airmodus.com)
 
@@ -44,7 +44,7 @@
 // Licence.
 // You may obtain a copy of the Licence at:
 
-// https://joinup.ec.europa.eu/community/eupl/og_page/european-union-public-licence-eupl-v11
+// https://joinup.ec.europa.eu/software/page/eupl5
 
 // Unless required by applicable law or agreed to in 
 // writing, software distributed under the Licence is
@@ -64,11 +64,18 @@ p = pwd()
 getd(p)
 clear p
 
-[filename,datapath] = uigetfile({'*.dat'},"",'SELECT THE DATA FILE');
+sv = SOFT_VER_CHECK()
+
+if sv < 6 then
+    stacksize('max')
+    gstacksize('max')
+end
+
+[filename,datapath] = uigetfile(['*.dat'],"",'SELECT THE DATA FILE');
 datet = (part(filename,$-11:$-4));
 
 // Name of the calibration file
-[calib,datapath_cal] = uigetfile({'*.txt'},"",'SELECT THE CALIBRATION FILE');  
+[calib,datapath_cal] = uigetfile(['*.txt'],"",'SELECT THE CALIBRATION FILE');  
 
 
 // USER INPUTS
@@ -91,8 +98,6 @@ end
 
 // Importing measurement data
 header = 1;
-stacksize('max')
-gstacksize('max')
 [A,comments]=csvRead(datapath+'/'+filename,',',[],'string',[],[],[],header);
 
 // Finding the values
@@ -129,6 +134,10 @@ a = (flowmax/flowmin).^(1/(n-n0));
 P0 = flowmax./a.^n;
 satflow = P0.*a.^apu;
 
+conc=c;
+flow=sat_f;
+time=tim;
+
 pvm=datenum(strtod(part(datet,1:4)),strtod(part(datet,5:6)),strtod(part(datet,7:8)));
 apuaika = datevec(pvm);
 
@@ -151,13 +160,13 @@ k2 = min(k1);
 nscan = [];
 for i = 1:length(flow)
     if i < length(flow) then
-    if i<=k2 then
-        nscan(i) = 0;
-    elseif round(100*flow(i))/100 == flowmin & round(100*flow(i+1))/100 ~= flowmin & i<length(flow) then
-        nscan(i) = nscan(i-1)+1;
-    else
-        nscan(i) = nscan(i-1);
-    end
+        if i<=k2 then
+            nscan(i) = 0;
+        elseif round(100*flow(i))/100 == flowmin & round(100*flow(i+1))/100 ~= flowmin & i<length(flow) then
+            nscan(i) = nscan(i-1)+1;
+        else
+            nscan(i) = nscan(i-1);
+        end
     end
     if i == length(flow) then
         nscan(i) = nscan(i-1);
@@ -228,7 +237,6 @@ dconc=max(dconc,0);
 
 // Averaging data HERE
 if averaging == 1 & avenum <= size(timenew,1) then
-    avenum = avenum-1
     for ii = 1:size(dconc,1)-avenum
         ave_dconc(ii,:) = mean(dconc(ii:ii+avenum,:),'r')
         ave_time(ii) = mean(timenew(ii))
@@ -262,7 +270,7 @@ if plotting == 1 then
     concmin=floor(log10(min(conc5)));
     concmax=ceil(log10(max(conc5)));
     conc6=log10(conc5);
-    conc6 = [conc6(:,1) conc6];
+    conc6 = [conc6 ones(size(conc6,1),1)];
     
     f = figure(2)
     clf()
@@ -325,6 +333,7 @@ if wanttosave == 1
     csvWrite(table,POLKU,',')
 end
 
-gstacksize('min')
-stacksize('min')
-
+if sv < 6 then
+    stacksize('min')
+    gstacksize('min')
+end
