@@ -60,6 +60,11 @@
 clear
 clearglobal
 xdel(winsid())
+[u,t,n]=file(); 
+i = grep(n',"/(?:.*\.sci|.*\.sce)$/","r");
+fullpath = n(i(1))
+[path,fname,extension] = fileparts(fullpath)
+chdir(path)
 p = pwd()
 getd(p)
 clear p
