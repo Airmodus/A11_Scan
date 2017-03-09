@@ -35,6 +35,10 @@
 // Column n. 3->: Particle number concentration in size bins in #/cc (NOTE:
 // not in dN/dlogDp)
 
+// Notation for the Dilution Factor = (Q_sample + Q_dilution) / Q_sample
+// Q_sample is the volumetric sample flow rate going to the PSM (2.5 lpm)
+// Q_dilution is the volumetric flow rate of the filtered dilution air
+
 // Copyright 2016 Airmodus Ltd.
 
 // Licensed under the EUPL, Version 1.1 or – as soon they 
@@ -115,7 +119,7 @@ hour = strtod(part(t,12:13));
 minute = strtod(part(t,15:16));
 second = strtod(part(t,18:19));
 tim=datenum(year,month,day,hour,minute,second);
-c=strtod(A(:,2),'.')./DF; //concentration from PSM (1/cm3) (corrected for dilution)
+c=strtod(A(:,2),'.').*DF; //concentration from PSM (1/cm3) (corrected for dilution)
 sat_f=strtod(A(:,4),'.'); // saturator flow rate (lpm)
 
 //shifting the data to account for time delay
