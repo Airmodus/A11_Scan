@@ -38,6 +38,10 @@
 // Column n. 3->: Particle number concentration in size bins in #/cc (NOTE:
 // not in dN/dlogDp)
 
+// Notation for the Dilution Factor = (Q_sample + Q_dilution) / Q_sample
+// Q_sample is the volumetric sample flow rate going to the PSM (2.5 lpm)
+// Q_dilution is the volumetric flow rate of the filtered dilution air
+
 // Copyright 2016 Airmodus Ltd.
 
 // Licensed under the EUPL, Version 1.1 or – as soon they 
