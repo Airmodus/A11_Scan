@@ -13,6 +13,17 @@ function Pen = losses(d,Q_lpm,tr,L,temp,press,plt)
 // temperature in [Kelvin]
 // pressure in [Pascal]
 
+// Equations are based on:
+
+//  Gormley, P.G., Kennedy, M., 1949. Diffusion from a stream following through a cylinderical tube.
+//  Proceedings of Royal Irish Academy 52, 163–169.
+
+//  Wells, A.C., Chamberlain, A.C., 1967. Transport of small particles to vertical surfaces. British
+//  Journal of Applied Physics 18, 1793–1799.
+
+//  Lee, K.W., Gieseke, J.A., 1994. Deposition of particles in turbulent flow pipes. Journal of 
+//  Aerosol Science 25, 699–704.
+
 d = d*1e-9; // converting [m] -> [nm]
 Q=Q_lpm.*0.001./60; // Q = Volumetric flow rate [m3/s]
 
