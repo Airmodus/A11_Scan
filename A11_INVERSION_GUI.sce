@@ -25,6 +25,7 @@
 // rlambda.sci
 // kaasuv.sci
 // averagedata.sci
+// SOFT_VER_CHECK.sci
 
 // Note: requires A11 calibration file!
 
