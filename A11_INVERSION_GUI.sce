@@ -239,7 +239,10 @@ if diffcorr == 1
     inletr = inletr * 1e-2;
     peneff=losses(dia,inletfr,inletr,inletl,temp,pres,plotting);
     for i=1:size(dia,2)-1
-        dconc(:,i)=dconc(:,i)./peneff(i);
+        peneffave(:,i) = (peneff(i) + peneff(i+1))/2
+    end
+    for i=1:size(dconc,1)
+        dconc(i,:) = dconc(i,:)./peneffave
     end
 end
 
