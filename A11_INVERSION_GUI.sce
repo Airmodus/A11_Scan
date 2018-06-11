@@ -109,7 +109,7 @@ end
 
 // Importing measurement data
 header = 1;
-[A,comments]=csvRead(datapath+'/'+filename,',',[],'string',[],[],[],header);
+[A,comments]=csvRead(datapath+'/'+filename,',',[],'string',[],'/9999|Error/',[],header);
 
 // Finding the values
 t=A(:,1);
