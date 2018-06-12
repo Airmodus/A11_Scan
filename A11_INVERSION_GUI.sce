@@ -238,7 +238,7 @@ if diffcorr == 1
     inletl = inletl * 1e-2;
     inletr = inletr * 1e-2;
     peneff=losses(dia,inletfr,inletr,inletl,temp,pres,plotting);
-    for i=1:size(dia,2)-1
+    for i=1:size(dia,1)-1
         peneffave(:,i) = (peneff(i) + peneff(i+1))/2
     end
     for i=1:size(dconc,1)
