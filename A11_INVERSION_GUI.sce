@@ -145,10 +145,6 @@ a = (flowmax/flowmin).^(1/(n-n0));
 P0 = flowmax./a.^n;
 satflow = P0.*a.^apu;
 
-conc=c;
-flow=sat_f;
-time=tim;
-
 pvm=datenum(strtod(part(datet,1:4)),strtod(part(datet,5:6)),strtod(part(datet,7:8)));
 apuaika = datevec(pvm);
 
