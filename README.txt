@@ -1,21 +1,21 @@
 
 //------------------------------------------------------------------------------
-// AIRMODUS A11 inversion codes for scanning raw (.dat) data 
-// by JV (joonas.vanhanen@airmodus.com)
+// AIRMODUS A11 inversion code for scanning raw (.dat) data 
+// v.1.0
 
-// NOTE: These codes are used to invert A11 scanning data only!
+// by Joonas Vanhanen (joonas.vanhanen@airmodus.com)
 
-// Inverts PSM scan data (.dat-file) into size distributions based on calibration file data
-// Corrects data for diffusion losses if needed based on Gormley & Kennedy 1949
+// Inverts PSM scan data into size distributions
+// Corrects data for diffusion losses
 // Plots and saves inverted data
 
-// Download Scilab from: http://www.scilab.org/download/latest
+// Download Scilab from: http://scilab.io/download/
 
-// Run A11_INVERSION_GUI.sci to invert .dat - file
+// Run A11_nCNC_SCAN_INVERSION_v.1.0.sci to invert .dat - file
 
-// sub-functions / .sci-files used:
-// diameters2.sci
-// deteff_af_dia.sci
+// Functions / .sci-files used:
+// diameters_interpolation.sci
+// deteff_dia_interpolat.sci
 // NORM_EXP_FIT2.sci
 // EXP_FIT2.sci
 // NORM_CUTOFF.sci
@@ -28,8 +28,14 @@
 // cunn.sci
 // rlambda.sci
 // kaasuv.sci
+// averagedata.sci
+// SOFT_VER_CHECK.sci
+// polyfit.sci
+// PSM_ERROR.sci
+// PSM_NOTE.sci
+// CPC_ERROR.sci
 
-// NOTE: requires A11 calibration file!
+// Note: requires A11 calibration file!
 
 // Output file format (M(row,column)) (comma separated):
 // First row: Diameters for bin limits in nm (first value M(1,1) is always zero)
@@ -42,7 +48,10 @@
 // Q_sample is the volumetric sample flow rate going to the PSM (2.5 lpm)
 // Q_dilution is the volumetric flow rate of the filtered dilution air
 
-// Copyright 2016 Airmodus Ltd.
+// Note that the time stamp in with all the data is always start of a scan
+// Also the running average is over the upcoming n scans
+
+// Copyright 2018 Airmodus Ltd.
 
 // Licensed under the EUPL, Version 1.1 or – as soon they 
 // will be approved by the European Commission - subsequent
