@@ -160,6 +160,10 @@ end
 if ERR == 1 then
     ind = find(A(:,46) ~= '0x0000' | A(:,45) ~= '0x0000' | A(:,47) ~= '0x0000')
     c(ind) = %nan;
+    if length(ind) == size(A,1) then
+        disp('No data without instrument errors')
+        abort
+    end
 end
 
 // List of unique errors and notes in the data set
