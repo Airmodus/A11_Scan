@@ -230,6 +230,11 @@ for i = 1:length(flow)
     end
 end
 
+if isempty(nscan) then
+    disp('No scans found in the data file')
+    abort
+end
+
 clear k1 k2
 
 // Averaging over a full scan and to bins
