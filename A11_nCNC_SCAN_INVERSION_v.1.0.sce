@@ -453,7 +453,7 @@ disp('--------------------------------------------------')
 
 // Saving data (#/cc; not dN/dlogDp)
 if wanttosave == 1
-    diasave = [0,dia'];
+    diasave = [0,dia];
     savingpath = uigetdir("","Choose directory for data saving")
     POLKU = savingpath+'/'+fileid1+'_'+datet+'.dat';
     concsave = [CONC3NM, dconc];
