@@ -145,7 +145,7 @@ sat_f=strtod(A(:,4),'.'); // saturator flow rate (lpm)
 // Binary strings for PSM and CPC notes and errors
 ERRORS = A(:,45:47);
 [indr,indc] = find(isnum(ERRORS) == %f);
-ERRORS(indr,indc) == '0x0000';
+
 for i = 1:length(indr)
     for ii = length(indc)
         ERRORS(indr(i),indc(ii)) = '0x0000';
