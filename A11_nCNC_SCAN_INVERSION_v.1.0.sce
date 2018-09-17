@@ -143,9 +143,17 @@ c=strtod(A(:,2),'.').*DF; //concentration from PSM (1/cm3) (corrected for diluti
 sat_f=strtod(A(:,4),'.'); // saturator flow rate (lpm)
 
 // Binary strings for PSM and CPC notes and errors
-PSM_note_bin = dec2bin(hex2dec(part(A(:,46),3:$)),16);
-PSM_err_bin = dec2bin(hex2dec(part(A(:,47),3:$)),16);
-CPC_err_bin = dec2bin(hex2dec(part(A(:,45),3:$)),16);
+ERRORS = A(:,45:47);
+[indr,indc] = find(isnum(ERRORS) == %f);
+ERRORS(indr,indc) == '0x0000';
+for i = 1:length(indr)
+    for ii = length(indc)
+        ERRORS(indr(i),indc(ii)) = '0x0000';
+    end
+end
+PSM_note_bin = dec2bin(hex2dec(part(ERRORS(:,2),3:$)),16);
+PSM_err_bin = dec2bin(hex2dec(part(ERRORS(:,3),3:$)),16);
+CPC_err_bin = dec2bin(hex2dec(part(ERRORS(:,1),3:$)),16);
 
 PSM_note = [];
 PSM_err = [];
