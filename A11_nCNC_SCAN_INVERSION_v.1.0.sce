@@ -128,7 +128,7 @@ end
 tic()
 disp('Importing data')
 header = 1;
-[A,comments]=csvRead(datapath+'/'+filename,',',[],'string',[],'/9999|Error/',[],header);
+[A,comments]=csvRead(datapath+'/'+filename,',',[],'string',[],'/9999/',[],header);
 
 // Finding the values
 t=A(:,1);
