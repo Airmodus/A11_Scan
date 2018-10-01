@@ -147,7 +147,7 @@ ERRORS = A(:,45:47);
 [indr,indc] = find(isnum(ERRORS) == %f);
 
 for i = 1:length(indr)
-    for ii = length(indc)
+    for ii = 1:length(indc)
         ERRORS(indr(i),indc(ii)) = '0x0000';
     end
 end
