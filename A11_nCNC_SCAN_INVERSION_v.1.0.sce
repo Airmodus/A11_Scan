@@ -144,8 +144,24 @@ sat_f=strtod(A(:,4),'.'); // saturator flow rate (lpm)
 
 // Binary strings for PSM and CPC notes and errors
 ERRORS = A(:,45:47);
-[indr,indc] = find(isnum(ERRORS) == %f);
 
+// Find error values in error values
+ind = grep(ERRORS,['Err' 'STAT']);
+indr = [];
+indc = [];
+for i = 1:length(ind)
+    if ind(i) <= size(A,1)
+        indr(i) = ind(i)
+        indc(i) = 1;
+    elseif ind(i) > size(A,1) & ind(i) <= 2*size(A,1)
+        indr(i) = ind(i)- size(A,1)
+        indc(i) = 2;
+    elseif ind(i) > 2*size(A,1)
+        indr(i) = ind(i) - 2*size(A,1)
+        indc(i) = 3;
+    end
+end
+clear i
 for i = 1:length(indr)
     for ii = 1:length(indc)
         ERRORS(indr(i),indc(ii)) = '0x0000';
@@ -292,18 +308,22 @@ if averaging == 1 & avenum <= size(timenew,1) then
     CONC3NM = ave_conc3nm;
 end
 
+k = isnan(conc1b);
+conc1b(k) = 0;
+clear k
+
 // Check the quality of each scan
 M = []
 
 for i = 1:size(conc1b,1)
     Cmax = nanmax(conc1b(i,:))
-    cf = polyfit(satflow,conc1b(i,:)./Cmax,1)
+    if sum(conc1b(i,:)) == 0
+        cf(1:2) = 0;
+    else
+        cf = polyfit(satflow,conc1b(i,:)./Cmax,1)
+    end
     M(i,:) = [i,cf(2)]
 end
-
-k = isnan(conc1b);
-conc1b(k) = 0;
-clear k
 
 dconc=[];
 for i=1:lr-1
