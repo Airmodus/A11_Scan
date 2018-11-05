@@ -388,10 +388,11 @@ if plotting == 1 & dq ~= max(nscan) then
     xlabel('Diameter [nm]','fontsize',3)
     ylabel('Concentration #/cc','fontsize',3)
     h = gca()
-    h.font_size = 2;
-    h.data_bounds = [1,4,10,2*(max(dconc_plot))]
     h.log_flags = "lln"
+    h.font_size = 2;
+    h.data_bounds = [1,4,10^floor(log10(min(dconc_plot))),2*(max(dconc_plot))]
     f.background = -2
+    h.x_ticks.labels = ['1';'2';'3';'4';'5']
     clear f h
     
     concmin=floor(log10(min(max(dat_inv,0.01))));
