@@ -354,7 +354,7 @@ if diffcorr == 1
 end
 
 // Set all the negative values to zero
-dconc=max(dconc,0);
+dconc=max(dconc,0.0001);
 
 // Change concentration to dN/dlogdp units
 dat_inv = [];
@@ -390,7 +390,7 @@ if plotting == 1 & dq ~= max(nscan) then
     h = gca()
     h.log_flags = "lln"
     h.font_size = 2;
-    h.data_bounds = [1,4,10^floor(log10(min(dconc_plot))),2*(max(dconc_plot))]
+    h.data_bounds = [1,4,max(10^floor(log10(min(dconc_plot))),10),2*(max(dconc_plot))]
     f.background = -2
     h.x_ticks.labels = ['1';'2';'3';'4';'5']
     clear f h
