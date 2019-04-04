@@ -419,7 +419,9 @@ if plotting == 1 & dq ~= max(nscan) then
     h.font_size = 2;
     f.background = -2
     clear f h
-    
+ end
+ 
+ if plotting == 1 then
     f = figure(3)
     dconc1 = max(dconc,0.01)
     CONC3NM = max(CONC3NM,0.01)
