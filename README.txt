@@ -1,17 +1,13 @@
 
 //------------------------------------------------------------------------------
 // AIRMODUS A11 inversion code for scanning raw (.dat) data 
-// v.1.0
+// v.1.0.1
 
 // by Joonas Vanhanen (joonas.vanhanen@airmodus.com)
 
 // Inverts PSM scan data into size distributions
 // Corrects data for diffusion losses
 // Plots and saves inverted data
-
-// Download Scilab from: http://scilab.io/download/
-
-// Run A11_nCNC_SCAN_INVERSION_v.1.0.sci to invert .dat - file
 
 // Functions / .sci-files used:
 // diameters_interpolation.sci
@@ -41,8 +37,7 @@
 // First row: Diameters for bin limits in nm (first value M(1,1) is always zero)
 // Column n. 1: date (Matlab datenum format)
 // Column n. 2: Total number concentration above the upper limit of size distribution (M(1,2))
-// Column n. 3->: Particle number concentration in size bins in #/cc (NOTE:
-// not in dN/dlogDp)
+// Column n. 3->: Particle number concentration in size bins in dN/dDp or in dN/dlogDp depending on the selection of the user
 
 // Notation for the Dilution Factor = (Q_sample + Q_dilution) / Q_sample
 // Q_sample is the volumetric sample flow rate going to the PSM (2.5 lpm)
@@ -51,7 +46,7 @@
 // Note that the time stamp in with all the data is always start of a scan
 // Also the running average is over the upcoming n scans
 
-// Copyright 2018 Airmodus Ltd.
+// Copyright 2019 Airmodus Ltd.
 
 // Licensed under the EUPL, Version 1.1 or – as soon they 
 // will be approved by the European Commission - subsequent
