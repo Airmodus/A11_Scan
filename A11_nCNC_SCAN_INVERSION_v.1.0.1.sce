@@ -1,7 +1,7 @@
 
 //------------------------------------------------------------------------------
 // AIRMODUS A11 inversion code for scanning raw (.dat) data 
-// v.1.0
+// v.1.0.1
 
 // by Joonas Vanhanen (joonas.vanhanen@airmodus.com)
 
@@ -37,8 +37,7 @@
 // First row: Diameters for bin limits in nm (first value M(1,1) is always zero)
 // Column n. 1: date (Matlab datenum format)
 // Column n. 2: Total number concentration above the upper limit of size distribution (M(1,2))
-// Column n. 3->: Particle number concentration in size bins in #/cc (NOTE:
-// not in dN/dlogDp)
+// Column n. 3->: Particle number concentration in size bins in dN/dDp or in dN/dlogDp depending on the selection of the user
 
 // Notation for the Dilution Factor = (Q_sample + Q_dilution) / Q_sample
 // Q_sample is the volumetric sample flow rate going to the PSM (2.5 lpm)
@@ -47,7 +46,7 @@
 // Note that the time stamp in with all the data is always start of a scan
 // Also the running average is over the upcoming n scans
 
-// Copyright 2018 Airmodus Ltd.
+// Copyright 2019 Airmodus Ltd.
 
 // Licensed under the EUPL, Version 1.1 or – as soon they 
 // will be approved by the European Commission - subsequent
@@ -109,9 +108,26 @@ end
 // USER INPUTS
 //------------------------------------------------------------------------------
 
-labels=["File name for inverted data";"Discard data with instrument errors? 1/0";"Raw data filtering? 1/0";"Number of bins";"Number of scans to average";"Dilution factor";"Saving on 1/0";"Plotting on 1/0";"Diffusion correction on 1/0";"Sampling tube length [cm]";"Sampling tube radius [cm]";"Sampling tube flow rate [lpm]";"Temperature [Kelvin]";"Pressure [Pascal]"];
-[ok,fileid1,ERR,bs,bn,avenum,DF,wanttosave,plotting,diffcorr,inletl,inletr,inletfr,temp,pres]=getvalue("Give input parameters for the inversion code",labels,...
-     list("str",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1),["INVERTED_PSM_DATA";"1";"1";"5";"1";"1";"0";"1";"0";"40";"0.2";"2.5";"293";"101325"])
+//labels=["File name for inverted data";"Discard data with instrument errors? 1/0";"Raw data filtering? 1/0";"Number of bins";"Number of scans to average";"Dilution factor";"Saving on 1/0";"Plotting on 1/0";"Diffusion correction on 1/0";"Sampling tube length [cm]";"Sampling tube radius [cm]";"Sampling tube flow rate [lpm]";"Temperature [Kelvin]";"Pressure [Pascal]"];
+//[ok,fileid1,ERR,bs,bn,avenum,DF,wanttosave,plotting,diffcorr,inletl,inletr,inletfr,temp,pres]=getvalue("Give input parameters for the inversion code",labels,...
+//     list("str",1,"str",1,"str",1,"vec",1,"vec",1,"vec",1,"str",1,"str",1,"str",1,"vec",1,"vec",1,"vec",1,"vec",1,"vec",1),["INVERTED_PSM_DATA";"%t";"%t";"5";"1";"1";"%f";"%t";"%f";"40";"0.2";"2.5";"293";"101325"])
+
+labels1=["File name for inverted data";"Number of bins";"Number of scans to average";"Dilution factor";"Discard data with instrument errors";"Raw data filtering";"Plotting";"Diffusion correction";"Saving";"Save as dN/dlogDp"];
+
+labels2=["Sampling tube length [cm]";"Sampling tube radius [cm]";"Sampling tube flow rate [lpm]";"Temperature [Kelvin]";"Pressure [Pascal]"];
+
+[ok1,fileid1,bn,avenum,DF,ERR,bs,plotting,diffcorr,wanttosave,dndlog]=getvalue("Give input parameters for the inversion code",labels1,list("str",1,"vec",1,"vec",1,"vec",1,"str",1,"str",1,"str",1,"str",1,"str",1,"str",1),["INVERTED_PSM_DATA";"5";"1";"1";"%t";"%t";"%t";"%f";"%f";"%t"])
+
+if diffcorr == '%t' then
+    [ok2,inletl,inletr,inletfr,temp,pres]=getvalue("Give input parameters for the diffusion loss calculations",labels2,list("vec",1,"vec",1,"vec",1,"vec",1,"vec",1),["40";"0.2";"2.5";"293";"101325"])
+end
+
+
+if plotting == '%t' then
+    plottingg = 1;
+else
+    plottingg = 0;
+end
 
 if avenum >1 then
     averaging = 1;
@@ -181,7 +197,7 @@ for i = 1:size(A,1)
     CPC_err = [CPC_err,strindex(CPC_err_bin(i),'1')]
 end
 
-if ERR == 1 then
+if ERR == '%t' then
     ind = find(A(:,46) ~= '0x0000' | A(:,45) ~= '0x0000' | A(:,47) ~= '0x0000')
     c(ind) = %nan;
     if length(ind) == size(A,1) then
@@ -229,10 +245,10 @@ di=cal(:,2);    // Diameters
 ef=cal(:,3);    // Detection efficiensies
 
 // Fit calibration data cut-off diameter as a function of saturator flow rate
-dia = diameters_interpolation(sat,di,satflow,plotting);
+dia = diameters_interpolation(sat,di,satflow,plottingg);
 
 // Fit calibration data detection efficiency as a function of diameter (at highest sat flow)
-[deteff] = deteff_dia_interpolat(di,ef,dia',plotting);
+[deteff] = deteff_dia_interpolat(di,ef,dia',plottingg);
 
 // Search number of scans
 k1 = find((100.*flow)./100 == flowmin)
@@ -332,7 +348,7 @@ end
 
 // Set all scans with no small particltes to 0
 
-if bs == 1 then
+if bs == '%t' then
     for i = 1:size(dconc,1)
         if M(i,2) < 0
             dconc(i,:) = 0
@@ -341,10 +357,10 @@ if bs == 1 then
 end
 
 // Correction for diffusion losses
-if diffcorr == 1
+if diffcorr == '%t'
     inletl = inletl * 1e-2;
     inletr = inletr * 1e-2;
-    peneff=losses(dia,inletfr,inletr,inletl,temp,pres,plotting);
+    peneff=losses(dia,inletfr,inletr,inletl,temp,pres,plottingg);
     for i=1:size(dia,2)-1
         peneffave(:,i) = (peneff(i) + peneff(i+1))/2
     end
@@ -366,7 +382,7 @@ end
 ind = find(M(:,2)<0)
 dq = size(ind,2) // Number of scans rejected
 
-if plotting == 1 & dq ~= max(nscan) then
+if plotting == '%t' & dq ~= max(nscan) then
     tictoc = toc()
     disp('Elapsed time = ' + string(tictoc) + ' s')
     disp('Plotting data')
@@ -421,7 +437,7 @@ if plotting == 1 & dq ~= max(nscan) then
     clear f h
  end
  
- if plotting == 1 then
+ if plotting == '%t' then
     f = figure(3)
     dconc1 = max(dconc,0.01)
     CONC3NM = max(CONC3NM,0.01)
@@ -460,7 +476,7 @@ if dq == max(nscan) then
     disp('!!!All the scans were discarded!!!')
 end
 
-if isempty(ind) == 'T' then
+if isempty(ind) == 'T' | bs == '%f' then
     disp('Scans discarder = 0')
 else
     disp('Scans discarder = ' + string(dq) + '/' + string(max(nscan)))
@@ -483,13 +499,22 @@ disp('--------------------------------------------------')
 
 
 // Saving data (#/cc; not dN/dlogDp)
-if wanttosave == 1
-    diasave = [0,dia];
-    savingpath = uigetdir("","Choose directory for data saving")
-    POLKU = savingpath+'/'+fileid1+'_'+datet+'.dat';
-    concsave = [CONC3NM, dconc];
-    table = [diasave; timenew concsave];
-    csvWrite(table,POLKU,',')
+if wanttosave == '%t'
+    if dndlog == '%f'
+        diasave = [0,dia];
+        savingpath = uigetdir("","Choose directory for data saving")
+        POLKU = savingpath+'/'+fileid1+'_dNdDp_'+datet+'.dat';
+        concsave = [CONC3NM, dconc];
+        table = [diasave; timenew concsave];
+        csvWrite(table,POLKU,',')
+    else
+        diasave = [0,dia];
+        savingpath = uigetdir("","Choose directory for data saving")
+        POLKU = savingpath+'/'+fileid1+'_dNdlogDp_'+datet+'.dat';
+        concsave = [CONC3NM, dat_inv];
+        table = [diasave; timenew concsave];
+        csvWrite(table,POLKU,',')
+    end
 end
 
 if sv < 6 then
