@@ -9,6 +9,8 @@
 // Corrects data for diffusion losses
 // Plots and saves inverted data
 
+// Please note that this code runs with Scilab versions up to 6.0.2.
+
 // Functions / .sci-files used:
 // diameters_interpolation.sci
 // deteff_dia_interpolat.sci
