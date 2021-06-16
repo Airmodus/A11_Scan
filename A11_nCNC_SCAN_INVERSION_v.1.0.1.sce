@@ -71,7 +71,7 @@ warning('off')
 
 clear
 clearglobal
-xdel(winsid())
+close(winsid())
 [u,t,n]=file(); 
 i = grep(n',"/(?:.*\.sci|.*\.sce)$/","r");
 fullpath = n(i(1))
@@ -259,7 +259,7 @@ for i = 1:length(flow)
     if i < length(flow) then
         if i<=k2 then
             nscan(i) = 0;
-        elseif round(100*flow(i))/100 == flowmin & round(100*flow(i+1))/100 ~= flowmin then
+        elseif round(10*flow(i))/10 == flowmin & round(10*flow(i+1))/10 ~= flowmin then
             nscan(i) = nscan(i-1)+1;
         else
             nscan(i) = nscan(i-1);
@@ -421,8 +421,7 @@ if plotting == '%t' & dq ~= max(nscan) then
     grayplot(timenew,dia,conc6)
     colorbar(concmin,concmax)
     e = gce();
-    e.parent.title.text = "dN/dlogDp";
-    title(datet,'fontsize',3)
+    title(datet + "  [dN/dlogDp]",'fontsize',3)
     xlabel('Time','fontsize',3)
     ylabel('Diameter [nm]','fontsize',3)
     h = gca()
