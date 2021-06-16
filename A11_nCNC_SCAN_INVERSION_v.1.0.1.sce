@@ -332,7 +332,7 @@ clear k
 M = []
 
 for i = 1:size(conc1b,1)
-    Cmax = nanmax(conc1b(i,:))
+    Cmax = max(conc1b(i,:))
     if sum(conc1b(i,:)) == 0
         cf(1:2) = 0;
     else
