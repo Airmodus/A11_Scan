@@ -15,7 +15,9 @@ Y = M(:,2);
 
 [d]=interpln([X';Y'],axa)
 
-d = max(d,min(di))
+ind = find(axa == max(axa))
+d(ind) = min(di)
+
 if max(d) > 4 then
     d = min(d,4)
 end
